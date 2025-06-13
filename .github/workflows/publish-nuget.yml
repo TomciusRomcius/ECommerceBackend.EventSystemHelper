@@ -27,6 +27,4 @@ jobs:
           --store-password-in-clear-text
 
       - name: Push to Github packages
-        run: dotnet nuget push ./nupkgs/*.nupkg --source "github" --skip-duplicate
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: dotnet nuget push ./nupkgs/*.nupkg --source "github" --skip-duplicate --api-key ${{ secrets.GH_TOKEN }}
