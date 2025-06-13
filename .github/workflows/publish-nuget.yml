@@ -22,9 +22,10 @@ jobs:
       - name: Add GitHub NuGet source
         run: |
           dotnet nuget add source \
-          --name github --username ${{ github.actor }} \
+          --name github \ 
+          --username ${{ github.actor }} \
           --password ${{ secrets.GH_TOKEN }} \
-          --store-password-in-clear-text
+          --store-password-in-clear-text \
           "https://nuget.pkg.github.com/TomciusRomcius/index.json"
 
       - name: Push to Github packages
