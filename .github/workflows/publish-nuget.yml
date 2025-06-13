@@ -23,6 +23,7 @@ jobs:
         run: |
           dotnet nuget push ./nupkgs/*.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }} \
+          --source https://api.nuget.org/v3/index.json
       - name: Add GitHub NuGet source
         run: |
           dotnet nuget add source \
