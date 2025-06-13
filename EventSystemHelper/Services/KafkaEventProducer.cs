@@ -6,7 +6,7 @@ namespace EventSystemHelper.Services
 {
     public class KafkaEventProducer : IEventProducer, IDisposable
     {
-        private readonly IProducer<string, string> _producer;
+        private readonly IProducer<Null, string> _producer;
 
         public KafkaEventProducer(KafkaConfiguration kafkaConfiguration)
         {
@@ -15,10 +15,10 @@ namespace EventSystemHelper.Services
                 BootstrapServers = kafkaConfiguration.Servers,
                 ClientId = Dns.GetHostName()
             };
-            _producer = new ProducerBuilder<string, string>(cfg).Build();
+            _producer = new ProducerBuilder<Null, string>(cfg).Build();
         }
 
-        public async Task ProduceEventAsync(string topic, Message<string, string> message, CancellationToken cancellationToken)
+        public async Task ProduceEventAsync(string topic, string message, CancellationToken cancellationToken)
         {
             await _producer.ProduceAsync(topic, message, cancellationToken);
         }

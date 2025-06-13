@@ -1,10 +1,15 @@
 ﻿using Confluent.Kafka;
+using EventSystemHelper.Interfaces.Utils;
 using EventSystemHelper.Services;
-using EventSystemHelper.Utils;
-using System.Text;
+using System.Text.Json;
 
 namespace EventSystemHelper.Tests.Integration
 {
+    class MessageType
+    {
+        public required string Item { get; set; }
+    }
+
     public class KafkaIntegrationTest
     {
         /** Basic integration test where we setup a consumer and
@@ -13,32 +18,36 @@ namespace EventSystemHelper.Tests.Integration
         [Fact]
         public async Task KafkaEventConsumerAndKafkaEventConsumer_ShouldProduceAndConsumeEvents()
         {
+            MessageType message = new()
+            {
+                Item = "a"
+            };
+
             var kafkaCfg = new KafkaConfiguration("localhost:9093");
-            var topic = "topic";
+            var topic = "test-topic";
+
+            using var adminClient = new AdminClientBuilder(new AdminClientConfig
+            {
+                BootstrapServers = kafkaCfg.Servers,
+            }).Build();
+
+            try
+            {
+                await adminClient.DeleteTopicsAsync([topic]);
+            }
+            catch { }
 
             KafkaEventConsumer consumer = new KafkaEventConsumer(kafkaCfg, AutoOffsetReset.Earliest, "group-id", topic);
             KafkaEventProducer producer = new KafkaEventProducer(kafkaCfg);
 
-            string value = "ABCD";
-
-            var message = new Message<string, string>
-            {
-                Headers = new Headers
-                {
-                    { "value", Encoding.UTF8.GetBytes(value) }
-                }
-            };
-
             var pcts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-            await producer.ProduceEventAsync(topic, message, pcts.Token);
+            var messageJson = JsonSerializer.Serialize(message);
+            await producer.ProduceEventAsync(topic, messageJson, pcts.Token);
 
             CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-            ConsumeResult<string, string> retrieved = consumer.Consume(cts.Token);
-
-            var retrievedHeaderPair = retrieved.Message.Headers.Where(i => i.Key == "value").FirstOrDefault();
-            Assert.NotNull(retrievedHeaderPair);
-            var retrievedValue = Encoding.UTF8.GetString(retrievedHeaderPair.GetValueBytes());
-            Assert.Equal(value, retrievedValue);
+            MessageType? retrieved = consumer.Consume<MessageType>(cts.Token);
+            Assert.NotNull(retrieved);
+            Assert.Equal(message.Item, retrieved.Item);
         }
     }
 }
