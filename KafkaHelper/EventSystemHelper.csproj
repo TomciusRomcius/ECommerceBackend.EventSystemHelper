@@ -5,6 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Tomas.EventSystemHelper</PackageId>
+    <RepositoryUrl>https://github.com/TomciusRomcius/ECommerceBackend.EventSystemHelper</RepositoryUrl>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
