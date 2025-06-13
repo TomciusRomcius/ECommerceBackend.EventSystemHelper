@@ -22,7 +22,7 @@ jobs:
       - name: Add GitHub NuGet source
         run: |
           dotnet nuget add source \
-          --name github \ 
+          --name github \
           --username ${{ github.actor }} \
           --password ${{ secrets.GH_TOKEN }} \
           --store-password-in-clear-text \
