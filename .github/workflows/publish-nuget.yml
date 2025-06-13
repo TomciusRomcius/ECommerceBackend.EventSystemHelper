@@ -1,7 +1,7 @@
 name: Build and publish NuGet package
 on:
   push:
-    branches: [development]
+    branches: [development, ci/cd]
 
 jobs:
   build-package:
