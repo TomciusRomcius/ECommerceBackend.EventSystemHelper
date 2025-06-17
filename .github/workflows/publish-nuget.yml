@@ -4,7 +4,7 @@ on:
     branches: [development, ci/cd]
 
 jobs:
-  build-package:
+  publish-kafka:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
