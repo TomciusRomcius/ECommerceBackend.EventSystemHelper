@@ -1,12 +1,13 @@
 ﻿using Confluent.Kafka;
 using EventSystemHelper.Interfaces;
-using EventSystemHelper.Utils;
+using EventSystemHelper.Kafka.Utils;
+using Newtonsoft.Json;
 
-namespace EventSystemHelper.Services
+namespace EventSystemHelper.Kafka.Services
 {
     public class KafkaEventConsumer : IEventConsumser
     {
-        private readonly IConsumer<string, string> _consumer;
+        private readonly IConsumer<Ignore, string> _consumer;
 
         public KafkaEventConsumer(KafkaConfiguration kafkaConfiguration, AutoOffsetReset autoOffsetReset, string groupId, string topic)
         {
@@ -17,13 +18,14 @@ namespace EventSystemHelper.Services
                 AutoOffsetReset = autoOffsetReset,
             };
 
-            _consumer = new ConsumerBuilder<string, string>(cfg).Build();
+            _consumer = new ConsumerBuilder<Ignore, string>(cfg).Build();
             _consumer.Subscribe(topic);
         }
 
-        public ConsumeResult<string, string> Consume(CancellationToken cancellationToken)
+        public T? Consume<T>(CancellationToken cancellationToken)
         {
-            return _consumer.Consume(cancellationToken);
+            string message = _consumer.Consume(cancellationToken).Message.Value;
+            return JsonConvert.DeserializeObject<T>(message);
         }
     }
 }

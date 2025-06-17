@@ -1,4 +1,4 @@
-﻿namespace EventSystemHelper.Interfaces.Utils
+﻿namespace EventSystemHelper.Kafka.Utils
 {
     public class KafkaConfiguration
     {

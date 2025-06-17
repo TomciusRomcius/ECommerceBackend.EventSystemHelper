@@ -1,4 +1,4 @@
-﻿namespace EventSystemHelper.Interfaces.Interfaces
+﻿namespace EventSystemHelper.Interfaces
 {
     public interface IEventConsumser
     {

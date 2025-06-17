@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
-using EventSystemHelper.Interfaces.Utils;
-using EventSystemHelper.Services;
+using EventSystemHelper.Kafka.Services;
+using EventSystemHelper.Kafka.Utils;
 using System.Text.Json;
 
 namespace EventSystemHelper.Tests.Integration

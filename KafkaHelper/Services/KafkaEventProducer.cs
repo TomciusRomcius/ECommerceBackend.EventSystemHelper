@@ -18,7 +18,7 @@ namespace EventSystemHelper.Services
             _producer = new ProducerBuilder<Null, string>(cfg).Build();
         }
 
-        public async Task ProduceEventAsync(string topic, string message, CancellationToken cancellationToken)
+        public async Task ProduceEventAsync(string topic, string jsonMessage, CancellationToken cancellationToken)
         {
             await _producer.ProduceAsync(topic, message, cancellationToken);
         }
