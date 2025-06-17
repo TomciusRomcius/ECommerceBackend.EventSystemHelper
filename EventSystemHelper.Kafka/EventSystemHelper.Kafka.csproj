@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <PackageId>Tomas.EventSystemHelper.Kafka</PackageId>
     <RepositoryUrl>https://github.com/TomciusRomcius/ECommerceBackend.EventSystemHelper.Kafka</RepositoryUrl>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
